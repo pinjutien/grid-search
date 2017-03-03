@@ -12,7 +12,7 @@ https://www.kaggle.com/svpons/airbnb-recruiting-new-user-bookings/script-0-8655/
 
 '''
 #Loading data
-paths = '/home/pinju/src/grid-search/airbnb-data/'
+paths = '~/grid-search/airbnb-data/'
 df_train = pd.read_csv(paths + 'train_users_2.csv')
 df_test = pd.read_csv(paths + 'test_users.csv')
 
