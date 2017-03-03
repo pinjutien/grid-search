@@ -1,0 +1,3 @@
+* The goal of this projec is to compare the time usage of grid search and dask grid search
+  - Based line: grid search in sklearn: varying n_jobs.
+  - Compare: dask grid search using workers/scheduler.
