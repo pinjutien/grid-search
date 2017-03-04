@@ -20,14 +20,15 @@ df_test = pd.read_csv(paths + 'test_users.csv')
 X, y, X_test = preprocessing_data(df_train, df_test)
 
 #Classifier
-# model_choice = 'DecisionTreeClassifier'
+model_choice = 'DecisionTreeClassifier'
 # model_choice = 'KNeighborsClassifier'
-model_choice = 'random forests'
+# model_choice = 'random forests'
 model = classifier_param[model_choice][0]
 param_grid = classifier_param[model_choice][1]
 
 print("model: ", model)
 print("param_grid: ", param_grid)
+runing_time = []
 
 for jobs in range(1,2):
     t0 = time()
@@ -42,7 +43,11 @@ for jobs in range(1,2):
     grid_search.fit(X, y)
     del grid_search
     # print("end grid search: ", time() -t0)
-    print(jobs, " ", time()-t0)
+    time_elapse = time()-t0
+    runing_time.append([model_choice, jobs, time_elapse])
+    print(jobs, " ", time_elapse)
 
+runing_time_df = pd.DataFrame(data = runing_time, columns = ['model', 'jobs', 'time'])
+runing_time_df.to_csv("sk_learn_runningtime.csv")
 # grid_search.fit(X, y)
 # grid_search.best_params_(X, y)
