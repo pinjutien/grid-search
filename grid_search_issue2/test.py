@@ -7,6 +7,7 @@ __copyright__    = 'Copyright 2017'
 
 import pandas as pd
 from xgboost.sklearn import *
+from sklearn.tree import DecisionTreeClassifier
 
 def main(argc, argv):
     grid = {
@@ -25,7 +26,8 @@ def main(argc, argv):
         #'base_score'
     },
 
-    model = XGBRegressor()
+    # model = XGBRegressor()
+    model = DecisionTreeClassifier()
 
     store = pd.HDFStore('foobar.hdf5', 'r')
 
@@ -40,7 +42,8 @@ def main(argc, argv):
 
     print('doing grid search')
     scheduler_address = '173.208.222.74:8877'
-    exc = Executor(scheduler_address, set_as_default=True)
+    # exc = Executor(scheduler_address, set_as_default=True)
+    c = Client(scheduler_address, set_as_default=True)    
     gs = DaskGridSearchCV(model, grid).fit(train_x, train_y)
     # c = Client(scheduler_address, set_as_default=True)
     #gs = DaskGridSearchCV(model, grid, get = c.get).fit(train_x, train_y)
