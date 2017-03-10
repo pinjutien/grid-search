@@ -1,2 +1,2 @@
-,model,jobs,time
-0,DecisionTreeClassifier,0,226.11543941497803
+,model,jobs,time,n_workers
+0,DecisionTreeClassifier,0,206.37559819221497,2
