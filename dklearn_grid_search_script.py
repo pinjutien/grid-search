@@ -32,8 +32,10 @@ print("model: ", model)
 print("param_grid: ", param_grid)
 scheduler_address = '173.208.222.74:8877'
 runing_time = []
+n_workers = 1
+print("number of workers: ", n_workers)
 
-for jobs in range(1):
+for cv_temp in range(2,5):
     t0 = time()
     if(model_choice == 'random forests'):
         print("\n\n")
@@ -43,24 +45,29 @@ for jobs in range(1):
         grid_search = DaskRandomizedSearchCV(
             model,
             param_grid,
-            cv = 3,
+            cv = cv_temp,
             get= c.get
         )
     else:
-        exc = Executor(scheduler_address, set_as_default=True)
+        c = Client(scheduler_address, set_as_default=True)
         grid_search = DaskGridSearchCV(
             model,
             param_grid,
-            # verbose= 3,
-            # n_jobs = jobs,
-            cv = 3,
+            cv = cv_temp
         )
 
     grid_search.fit(X, y)
     time_elapse = time()-t0
-    runing_time.append([model_choice, jobs, time_elapse])
-    print(jobs, " ", time_elapse)
-runing_time_df = pd.DataFrame(data = runing_time, columns = ['model', 'jobs', 'time'])
-runing_time_df.to_csv("dk_learn_runningtime.csv")
+    runing_time.append([model_choice, cv_temp, time_elapse])
+    print(" running time: ", time_elapse)
+    num_graph = len(grid_search.dask_graph_)
+    print(" size of graph: ", num_graph)
+
+    
+    runing_time_df = pd.DataFrame(data = runing_time, columns = ['model', 'cv', 'time'])
+    runing_time_df['n_workers'] = n_workers
+    runing_time_df['n_graph'] = num_graph
+    runing_time_df.to_csv("output/dk_learn_runningtime_workers_{n_workers}_cv_{cv_temp}.csv".format(n_workers = n_workers, cv_temp = cv_temp))
+    del grid_search, runing_time_df
 # grid_search.fit(X, y)
 # grid_search.best_params_(X, y)

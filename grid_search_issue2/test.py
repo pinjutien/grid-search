@@ -7,9 +7,10 @@ __copyright__    = 'Copyright 2017'
 
 import pandas as pd
 from xgboost.sklearn import *
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 
 def main(argc, argv):
+    '''
     grid = {
         'max_depth'         : range(1,12,2),
         'learning_rate'     : [0.01, 0.03, 0.05, 0.07, 0.09, 0.1, 0.2],
@@ -25,10 +26,17 @@ def main(argc, argv):
         #'scale_pos_weight'
         #'base_score'
     },
+    '''
 
+    grid = {
+        'max_depth'         : range(1,12),
+        'min_samples_split' : range(2,10),
+        'min_samples_leaf' : range(2,10)
+    }
+
+    
     # model = XGBRegressor()
-    model = DecisionTreeClassifier()
-
+    model = DecisionTreeRegressor()
     store = pd.HDFStore('foobar.hdf5', 'r')
 
     train_x = store['train_x']
