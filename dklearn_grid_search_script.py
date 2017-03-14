@@ -14,7 +14,7 @@ https://www.kaggle.com/svpons/airbnb-recruiting-new-user-bookings/script-0-8655/
 
 '''
 #Loading data
-paths = '/Users/pin-jutien/Documents/Working/grid-search/airbnb-data/'
+paths = '../grid-search/airbnb-data/'
 df_train = pd.read_csv(paths + 'train_users_2.csv')
 df_test = pd.read_csv(paths + 'test_users.csv')
 
@@ -32,10 +32,11 @@ print("model: ", model)
 print("param_grid: ", param_grid)
 scheduler_address = '173.208.222.74:8877'
 runing_time = []
-n_workers = 1
+n_workers = 8
 print("number of workers: ", n_workers)
 
-for cv_temp in range(2,5):
+for cv_temp in range(3,4):
+    print("cv: ", cv_temp)
     t0 = time()
     if(model_choice == 'random forests'):
         print("\n\n")
@@ -67,7 +68,7 @@ for cv_temp in range(2,5):
     runing_time_df = pd.DataFrame(data = runing_time, columns = ['model', 'cv', 'time'])
     runing_time_df['n_workers'] = n_workers
     runing_time_df['n_graph'] = num_graph
-    runing_time_df.to_csv("output/dk_learn_runningtime_workers_{n_workers}_cv_{cv_temp}.csv".format(n_workers = n_workers, cv_temp = cv_temp))
+    # runing_time_df.to_csv("output/dk_learn_runningtime_workers_{n_workers}_cv_{cv_temp}.csv".format(n_workers = n_workers, cv_temp = cv_temp))
     del grid_search, runing_time_df
 # grid_search.fit(X, y)
 # grid_search.best_params_(X, y)
