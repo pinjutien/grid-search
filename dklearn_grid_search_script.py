@@ -2,9 +2,10 @@ import numpy as np
 import pandas as pd
 from preprocess import preprocessing_data
 from model_params import classifier_param
-from dklearn import DaskGridSearchCV, DaskRandomizedSearchCV
+# from dklearn import DaskGridSearchCV, DaskRandomizedSearchCV
+from dask_searchcv import GridSearchCV, RandomizedSearchCV
 import sys
-from time import time
+from time import time, sleep
 from distributed import Executor, Client
 import dask
 
@@ -30,12 +31,13 @@ param_grid = classifier_param[model_choice][1]
 
 print("model: ", model)
 print("param_grid: ", param_grid)
-scheduler_address = '173.208.222.74:8877'
+scheduler_address = '173.208.222.74:1177'
 runing_time = []
-n_workers = 8
+n_workers = 18
 print("number of workers: ", n_workers)
 
-for cv_temp in range(3,4):
+for sample in range(10):
+    cv_temp = 3
     print("cv: ", cv_temp)
     t0 = time()
     if(model_choice == 'random forests'):
@@ -51,7 +53,7 @@ for cv_temp in range(3,4):
         )
     else:
         c = Client(scheduler_address, set_as_default=True)
-        grid_search = DaskGridSearchCV(
+        grid_search = GridSearchCV(
             model,
             param_grid,
             cv = cv_temp
@@ -68,7 +70,12 @@ for cv_temp in range(3,4):
     runing_time_df = pd.DataFrame(data = runing_time, columns = ['model', 'cv', 'time'])
     runing_time_df['n_workers'] = n_workers
     runing_time_df['n_graph'] = num_graph
-    # runing_time_df.to_csv("output/dk_learn_runningtime_workers_{n_workers}_cv_{cv_temp}.csv".format(n_workers = n_workers, cv_temp = cv_temp))
-    del grid_search, runing_time_df
+    runing_time_df['sample'] = sample
+    runing_time_df.to_csv("output/dk_learn_runningtime_workers_{n_workers}_cv_{cv_temp}_sample_{sample}_04xxx.csv".format(n_workers = n_workers,
+                                                                                                                             cv_temp = cv_temp,
+                                                                                                                             sample = sample)
+    )
+    del grid_search, runing_time_df, runing_time
+    sleep(5)
 # grid_search.fit(X, y)
 # grid_search.best_params_(X, y)
