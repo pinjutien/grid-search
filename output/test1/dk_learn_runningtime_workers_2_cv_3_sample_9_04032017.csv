@@ -1,0 +1,11 @@
+,model,cv,time,n_workers,n_graph,sample
+0,DecisionTreeClassifier,3,685.121678829,2,3657,9
+1,DecisionTreeClassifier,3,680.004193783,2,3657,9
+2,DecisionTreeClassifier,3,680.030293941,2,3657,9
+3,DecisionTreeClassifier,3,680.583405972,2,3657,9
+4,DecisionTreeClassifier,3,679.801162958,2,3657,9
+5,DecisionTreeClassifier,3,677.113701105,2,3657,9
+6,DecisionTreeClassifier,3,699.833076954,2,3657,9
+7,DecisionTreeClassifier,3,677.639883041,2,3657,9
+8,DecisionTreeClassifier,3,677.224327087,2,3657,9
+9,DecisionTreeClassifier,3,680.722162962,2,3657,9
